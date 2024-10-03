@@ -48,7 +48,10 @@ This assistant performs the following operations:
 
 ## How to Install and Run on Your PC
 
-### 1. Clone the Repository
+### Install the Required Libraries
+```bash
+pip install SpeechRecognition gtts streamlit openai langdetect sounddevice numpy pydub
+### 2. Clone the Repository
 ```bash
 git clone https://github.com/yourusername/yourprojectname.git
 cd yourprojectname
