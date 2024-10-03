@@ -48,10 +48,52 @@ This assistant performs the following operations:
 
 ## How to Install and Run on Your PC
 
-### Install the Required Libraries
-```bash
-pip install SpeechRecognition gtts streamlit openai langdetect sounddevice numpy pydub
-### 2. Clone the Repository
-```bash
-git clone https://github.com/yourusername/yourprojectname.git
-cd yourprojectname
+## Requirements
+
+To run this application, you need to install the following Python packages:
+
+- `streamlit==1.37.1`
+- `speechrecognition==3.9.0`
+- `gtts==2.2.3`
+- `openai==0.27.0`
+- `langdetect==1.0.9`
+- `sounddevice==0.4.6`
+- `numpy==1.23.5`
+- `pydub==0.25.1`
+- `ffmpeg-python==0.2.0`
+
+
+## Setup Instructions
+
+### Creating and Using a Virtual Environment
+
+A virtual environment helps manage project-specific dependencies and avoids conflicts with other Python projects. Follow these steps to create and use a virtual environment for this project:
+
+#### 1. Create a Virtual Environment
+
+Open a terminal or command prompt and navigate to your project directory. Run the following command to create a virtual environment named `venv`:
+
+```sh
+python -m venv venv
+```
+#### 2. Activating the Virtual Environment
+```
+venv\Scripts\activate
+```
+
+### 3. Download all the dependencies and Libraries
+
+```
+pip install -r requirements.txt
+
+```
+
+### 4. Run the File
+```
+streamlit run <filename>.py
+```
+
+## License
+
+### This project is licensed under the MIT License. See the LICENSE file for more details.
+
