@@ -1,0 +1,9 @@
+streamlit==1.37.1
+speechrecognition==3.9.0
+gtts==2.2.3
+openai==0.27.0
+langdetect==1.0.9
+sounddevice==0.4.6
+numpy==1.23.5
+pydub==0.25.1
+ffmpeg-python==0.2.0
