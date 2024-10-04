@@ -11,7 +11,7 @@ from pydub import AudioSegment
 
 # Initialize OpenAI client
 client = OpenAI(
-    api_key="f34452a2e9f9429db2aaf4de0bdc182e",
+    api_key="",
     base_url="https://api.aimlapi.com",
 )
 
