@@ -9,10 +9,11 @@ import sounddevice as sd
 import numpy as np
 from pydub import AudioSegment
 
+
 # Initialize OpenAI client
 client = OpenAI(
-    api_key="f34452a2e9f9429db2aaf4de0bdc182e",
-    base_url="https://api.aimlapi.com",
+    api_key=st.secrets["API_KEY"],
+    base_url=st.secrets["BASE_URL"],
 )
 
 # Maintain a conversation history and user profiles
