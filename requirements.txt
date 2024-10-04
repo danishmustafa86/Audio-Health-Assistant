@@ -6,3 +6,5 @@ langdetect
 numpy
 pydub
 ffmpeg-python
+sounddevice
+
