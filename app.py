@@ -11,8 +11,8 @@ from pydub import AudioSegment
 
 # Initialize OpenAI client
 client = OpenAI(
-    api_key="",
-    base_url="https://api.aimlapi.com",
+    api_key=st.secrets["openai"]["api_key"],
+    base_url=st.secrets["openai"]["base_url"],
 )
 
 # Maintain a conversation history and user profiles
