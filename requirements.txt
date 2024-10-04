@@ -3,7 +3,6 @@ speechrecognition
 gtts
 openai
 langdetect
-sounddevice
 numpy
 pydub
 ffmpeg-python
