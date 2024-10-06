@@ -3,8 +3,8 @@ speechrecognition
 gtts
 openai
 langdetect
-# pyaudio==0.2.13 ; platform_system == "Darwin" or platform_system == "Linux"
-# pyaudio==0.2.13 ; platform_system == "Windows"
+pyaudio==0.2.13 ; platform_system == "Darwin" or platform_system == "Linux"
+pyaudio==0.2.13 ; platform_system == "Windows"
 pydub
 numpy
 
