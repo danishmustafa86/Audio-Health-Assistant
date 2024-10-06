@@ -8,7 +8,8 @@ import wave
 import numpy as np
 from pydub import AudioSegment
 from langdetect import detect
-import pyaudio
+import sounddevice as sd
+import soundfile as sf
 
 # Initialize OpenAI client
 client = OpenAI(
@@ -98,7 +99,7 @@ def detect_language(text):
 def audio_to_text(lang="en"):
     """Convert audio to text using SpeechRecognition, with specified language."""
     recognizer = sr.Recognizer()
-    
+
     with sr.Microphone() as source:
         st.write("Listening... Please speak.")
         audio_data = recognizer.listen(source)
@@ -123,29 +124,11 @@ def text_to_audio(text, lang):
     return output_file.name
 
 def play_audio(file_path):
-    """Play audio using PyAudio."""
-    global audio_segment
-    audio_segment = AudioSegment.from_mp3(file_path)
-    wav_file = tempfile.NamedTemporaryFile(delete=False, suffix=".wav")
-    audio_segment.export(wav_file.name, format="wav")
-
-    wf = wave.open(wav_file.name, 'rb')
-    p = pyaudio.PyAudio()
-    stream = p.open(format=p.get_format_from_width(wf.getsampwidth()),
-                    channels=wf.getnchannels(),
-                    rate=wf.getframerate(),
-                    output=True)
-
-    chunk = 1024
-    data = wf.readframes(chunk)
-    while data:
-        stream.write(data)
-        data = wf.readframes(chunk)
-    
-    stream.stop_stream()
-    stream.close()
-    p.terminate()
-    wf.close()
+    """Play audio using sounddevice."""
+    # Load audio file
+    data, samplerate = sf.read(file_path)
+    sd.play(data, samplerate)
+    sd.wait()  # Wait until the sound has finished playing
 
 def get_response(user_input, age=None, weight=None):
     """Get AI response from OpenAI model."""
@@ -154,12 +137,12 @@ def get_response(user_input, age=None, weight=None):
     system_message = "You are an AI assistant who knows everything."
     if age is not None and weight is not None:
         system_message += f" The user is {age} years old and weighs {weight} kg."
-    
+
     response = client.chat.completions.create(
         model="gpt-4",
         messages=[{"role": "system", "content": system_message}] + conversation_history
     )
-    
+
     assistant_message = response.choices[0].message.content
     st.write(f"Assistant: {assistant_message}")
     conversation_history.append({"role": "assistant", "content": assistant_message})
@@ -175,7 +158,7 @@ def check_symptom(symptom_description):
 
 def single_input_interaction():
     st.write("Press the button below to provide your voice input.")
-    
+
     if st.button("Record Voice Input"):
         user_input = audio_to_text(user_profile["language"])
 

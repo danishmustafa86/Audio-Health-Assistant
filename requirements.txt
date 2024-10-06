@@ -1,11 +1,9 @@
-streamlit
-speechrecognition
-gtts
-openai
-langdetect
-pyaudio==0.2.13 ; platform_system == "Darwin" or platform_system == "Linux"
-pyaudio==0.2.13 ; platform_system == "Windows"
-pydub
-numpy
-
-
+streamlit==1.39.0
+speechrecognition==3.8.1
+gtts==2.2.4
+openai==0.27.0
+pydub==0.25.1
+langdetect==1.0.9
+sounddevice==0.4.6
+soundfile==0.10.3.post1
+numpy==1.24.2
