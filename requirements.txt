@@ -1,9 +1,9 @@
 streamlit
-speechrecognition
-gtts
+SpeechRecognition
+gTTS
 openai
 langdetect
+sounddevice
 numpy
 pydub
-ffmpeg-python
-sounddevice  # Comment out if using pyaudio
+PyAudio
