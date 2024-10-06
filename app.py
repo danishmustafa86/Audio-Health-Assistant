@@ -5,7 +5,8 @@ import streamlit as st
 from openai import OpenAI
 import tempfile
 from langdetect import detect
-import sounddevice as sd
+import pyaudio
+import wave
 import numpy as np
 from pydub import AudioSegment
 
@@ -123,20 +124,41 @@ def text_to_audio(text, lang):
     return output_file.name
 
 def play_audio(file_path):
-    """Play audio using sounddevice."""
+    """Play audio using PyAudio."""
     global audio_segment
     
-    # Load the audio segment
+    # Convert MP3 to WAV
     audio_segment = AudioSegment.from_mp3(file_path)
-    samples = np.array(audio_segment.get_array_of_samples())
+    wav_file = tempfile.NamedTemporaryFile(delete=False, suffix=".wav")
+    audio_segment.export(wav_file.name, format="wav")
 
-    # Reshape the samples for stereo audio if necessary
-    if audio_segment.channels == 2:
-        samples = samples.reshape((-1, 2))
+    # Open the WAV file for PyAudio playback
+    wf = wave.open(wav_file.name, 'rb')
 
-    # Play audio
-    sd.play(samples, samplerate=audio_segment.frame_rate)
-    sd.wait()  # Wait until the audio is finished playing
+    # Initialize PyAudio
+    p = pyaudio.PyAudio()
+
+    # Open a stream to play the WAV file
+    stream = p.open(format=p.get_format_from_width(wf.getsampwidth()),
+                    channels=wf.getnchannels(),
+                    rate=wf.getframerate(),
+                    output=True)
+
+    # Play the audio by reading data chunks from the WAV file
+    chunk = 1024
+    data = wf.readframes(chunk)
+
+    while data:
+        stream.write(data)
+        data = wf.readframes(chunk)
+
+    # Stop the stream and close PyAudio
+    stream.stop_stream()
+    stream.close()
+    p.terminate()
+
+    # Close the WAV file
+    wf.close()
 
 def get_response(user_input, age=None, weight=None):
     """Get AI response from OpenAI model."""
@@ -207,7 +229,6 @@ def single_input_interaction():
 
             # Create buttons for audio control
             if st.button("End Current Output"):
-                sd.stop()  # Stop the audio playback
                 st.write("Audio playback stopped.")
 
             if st.button("Repeat Last Response"):
@@ -223,6 +244,7 @@ def single_input_interaction():
                     new_audio_segment.export("temp_audio.mp3", format="mp3")  # Export to temp file
                     st.write("Seeking backward in the audio...")
                     play_audio("temp_audio.mp3")
+
 
 # Streamlit UI
 st.title("AI Audio Health Assistant")
