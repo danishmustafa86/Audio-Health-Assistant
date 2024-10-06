@@ -1,22 +1,22 @@
-streamlit==1.39.0
+streamlit
 
 # Speech Recognition
-speech_recognition==3.10.1
+speech_recognition
 
 # Text-to-Speech
-gtts==0.8.3
+gtts
 
 # OpenAI API
-openai==0.28.1
+openai
 
 # Language Detection
-langdetect==1.0.9
+langdetect
 
 # Audio Processing
-pyaudio==0.2.13
-sounddevice==0.4.3
+pyaudio
+sounddevice
 
 # Scientific Computing (Optional)
-numpy==1.25.5
+numpy
 
 # Note:
