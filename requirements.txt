@@ -1,3 +1,6 @@
+pip>=24.2
+setuptools>=66
+wheel
 streamlit==1.25.0
 speechrecognition==3.8.1
 gtts==2.2.3
