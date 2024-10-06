@@ -1,11 +1,10 @@
-pip>=24.2
-setuptools>=66
-wheel
 streamlit==1.25.0
 speechrecognition==3.8.1
 gtts==2.2.3
-pyaudio==0.2.13
-numpy==1.24.4
-pydub==0.25.1
-openai==0.27.8
+openai==0.27.4
 langdetect==1.0.9
+pyaudio==0.2.13 ; platform_system == "Darwin" or platform_system == "Linux"
+pyaudio==0.2.13 ; platform_system == "Windows"
+pydub==0.25.1
+numpy==1.23.5
+wave
