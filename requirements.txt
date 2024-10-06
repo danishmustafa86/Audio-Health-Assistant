@@ -6,4 +6,5 @@ langdetect
 numpy
 pydub
 ffmpeg-python
-sounddevice
+pyaudio  # Uncomment this line and comment out sounddevice
+# sounddevice  # Comment out if using pyaudio
