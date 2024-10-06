@@ -6,4 +6,5 @@ pydub
 langdetect
 sounddevice
 soundfile
+pyaudio
 openai
