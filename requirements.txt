@@ -1,22 +1,9 @@
 streamlit
-
-# Speech Recognition
-speech_recognition
-
-# Text-to-Speech
+speechrecognition
 gtts
-
-# OpenAI API
 openai
-
-# Language Detection
 langdetect
-
-# Audio Processing
-pyaudio
-sounddevice
-
-# Scientific Computing (Optional)
 numpy
-
-# Note:
+pydub
+ffmpeg-python
+sounddevice
