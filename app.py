@@ -4,15 +4,15 @@ from gtts import gTTS
 import streamlit as st
 from openai import OpenAI
 import tempfile
-from langdetect import detect
-import pyaudio
 import wave
 import numpy as np
 from pydub import AudioSegment
+from langdetect import detect
+import pyaudio
 
 # Initialize OpenAI client
 client = OpenAI(
-    api_key="f34452a2e9f9429db2aaf4de0bdc182e",
+    api_key="f34452a2e9f9429db2aaf4de0bdc182e",  # Replace with your OpenAI API key
     base_url="https://api.aimlapi.com",
 )
 
@@ -88,9 +88,8 @@ language_mapping = {
 }
 
 # Global variables for audio control
-current_audio = None
 audio_segment = None
-audio_file = None  # Global variable to store audio file path
+audio_file = None
 
 def detect_language(text):
     """Detect the language of the input text."""
@@ -104,7 +103,7 @@ def audio_to_text(lang="en"):
         st.write("Listening... Please speak.")
         audio_data = recognizer.listen(source)
         st.write("Recording stopped. Processing your input...")
-        
+
         try:
             text = recognizer.recognize_google(audio_data, language=lang)
             st.write(f"You: {text}")
@@ -126,59 +125,45 @@ def text_to_audio(text, lang):
 def play_audio(file_path):
     """Play audio using PyAudio."""
     global audio_segment
-    
-    # Convert MP3 to WAV
     audio_segment = AudioSegment.from_mp3(file_path)
     wav_file = tempfile.NamedTemporaryFile(delete=False, suffix=".wav")
     audio_segment.export(wav_file.name, format="wav")
 
-    # Open the WAV file for PyAudio playback
     wf = wave.open(wav_file.name, 'rb')
-
-    # Initialize PyAudio
     p = pyaudio.PyAudio()
-
-    # Open a stream to play the WAV file
     stream = p.open(format=p.get_format_from_width(wf.getsampwidth()),
                     channels=wf.getnchannels(),
                     rate=wf.getframerate(),
                     output=True)
 
-    # Play the audio by reading data chunks from the WAV file
     chunk = 1024
     data = wf.readframes(chunk)
-
     while data:
         stream.write(data)
         data = wf.readframes(chunk)
-
-    # Stop the stream and close PyAudio
+    
     stream.stop_stream()
     stream.close()
     p.terminate()
-
-    # Close the WAV file
     wf.close()
 
 def get_response(user_input, age=None, weight=None):
     """Get AI response from OpenAI model."""
     conversation_history.append({"role": "user", "content": user_input})
-    
-    # Include age and weight in the system message for context
+
     system_message = "You are an AI assistant who knows everything."
     if age is not None and weight is not None:
         system_message += f" The user is {age} years old and weighs {weight} kg."
     
     response = client.chat.completions.create(
-        model="gpt-4o-2024-08-06",
+        model="gpt-4",
         messages=[{"role": "system", "content": system_message}] + conversation_history
     )
     
     assistant_message = response.choices[0].message.content
     st.write(f"Assistant: {assistant_message}")
-    
     conversation_history.append({"role": "assistant", "content": assistant_message})
-    
+
     return assistant_message
 
 def check_symptom(symptom_description):
@@ -186,18 +171,8 @@ def check_symptom(symptom_description):
     for symptom, advice in medical_conditions_db.items():
         if symptom in symptom_description.lower():
             return advice
-    return "I'm not sure about this symptom. Please consult a doctor for a more accurate diagnosis."
+    return "I'm not sure about this symptom. Please consult a doctor."
 
-def end_conversation():
-    """Function to end the conversation."""
-    st.write("Thank you for using the Health Assistant. Have a great day!")
-    st.stop()
-
-def emergency_contact():
-    """Function to provide emergency contact information."""
-    st.write("In case of emergency, please call your local emergency services or go to the nearest hospital.")
-
-# Function for single input and response
 def single_input_interaction():
     st.write("Press the button below to provide your voice input.")
     
@@ -209,42 +184,14 @@ def single_input_interaction():
             lang = language_mapping.get(detected_lang, user_profile["language"])
             st.write(f"Detected language: {lang}")
 
-            # Check for specific commands
-            if "health tip" in user_input.lower():
-                response_text = "Stay hydrated and get enough sleep."
-            elif "emergency" in user_input.lower():
-                emergency_contact()
-                return
-            else:
-                response_text = check_symptom(user_input)
-
-            if response_text == "I'm not sure about this symptom. Please consult a doctor for a more accurate diagnosis.":
+            response_text = check_symptom(user_input)
+            if response_text == "I'm not sure about this symptom. Please consult a doctor.":
                 response_text = get_response(user_input, user_profile["age"], user_profile["weight"])
 
-            # Convert text to audio and play it
-            global audio_file  # Use global variable for audio_file
+            global audio_file
             audio_file = text_to_audio(response_text, lang)
             st.write("Playing the response audio...")
             play_audio(audio_file)
-
-            # Create buttons for audio control
-            if st.button("End Current Output"):
-                st.write("Audio playback stopped.")
-
-            if st.button("Repeat Last Response"):
-                if audio_file:  # Check if audio_file is available
-                    st.write("Repeating the last response audio...")
-                    play_audio(audio_file)
-
-            if st.button("Seek Backward"):
-                if audio_segment is not None:
-                    # Seek backward by 5 seconds
-                    new_start_time = max(0, len(audio_segment) - 5000)  # 5000 ms
-                    new_audio_segment = audio_segment[new_start_time:]  # Get last part
-                    new_audio_segment.export("temp_audio.mp3", format="mp3")  # Export to temp file
-                    st.write("Seeking backward in the audio...")
-                    play_audio("temp_audio.mp3")
-
 
 # Streamlit UI
 st.title("AI Audio Health Assistant")
@@ -254,7 +201,6 @@ st.sidebar.header("User Profile")
 user_language = st.sidebar.selectbox("Select Your Language", list(language_mapping.keys()))
 user_profile["language"] = language_mapping[user_language]
 
-# Input for Age and Weight
 user_age = st.sidebar.number_input("Enter Your Age", min_value=0, max_value=120, value=30)
 user_profile["age"] = user_age
 
