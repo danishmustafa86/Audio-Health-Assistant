@@ -1,11 +1,22 @@
 streamlit==1.39.0
-speechrecognition
-gtts
-openai
-langdetect
-numpy
-pydub>=0.25.1
-ffmpeg-python
-sounddevice
-pyaudio
 
+# Speech Recognition
+speech_recognition==3.10.1
+
+# Text-to-Speech
+gtts==0.8.3
+
+# OpenAI API
+openai==0.28.1
+
+# Language Detection
+langdetect==1.0.9
+
+# Audio Processing
+pyaudio==0.2.13
+sounddevice==0.4.3
+
+# Scientific Computing (Optional)
+numpy==1.25.5
+
+# Note:
