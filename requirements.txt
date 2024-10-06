@@ -1,9 +1,8 @@
-streamlit
-SpeechRecognition==3.8.1
-gTTS==2.3.2
-openai==0.27.7
-langdetect==1.0.9
-sounddevice==0.4.6
-numpy==1.23.5
-pydub==0.25.1
+streamlit==1.25.0
+speechrecognition==3.8.1
+gtts==2.2.3
 pyaudio==0.2.13
+numpy==1.24.4
+pydub==0.25.1
+openai==0.27.8
+langdetect==1.0.9
