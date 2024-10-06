@@ -1,10 +1,17 @@
-streamlit
-speechrecognition
-gtts
-openai
-langdetect
-numpy
-pydub
-ffmpeg-python
-sounddevice
-pyaudio
+streamlit==1.39.0
+
+# Audio Processing
+pyaudio==0.2.13  # Might require additional setup on specific systems (see notes)
+sounddevice==0.4.3
+pydub==0.26.0
+
+# Natural Language Processing
+langdetect==1.0.9
+openai==0.28.1
+
+# Scientific Computing (Optional, depending on your use case)
+numpy==1.25.5
+scipy==1.10.1
+
+# Note:
+# - pyaudio installation might require additional steps on some systems (e.g., installing development libraries). Refer to the troubleshooting section below for details.
