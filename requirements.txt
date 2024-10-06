@@ -7,4 +7,4 @@ numpy
 pydub
 ffmpeg-python
 pyaudio  # Uncomment this line and comment out sounddevice
-# sounddevice  # Comment out if using pyaudio
+sounddevice  # Comment out if using pyaudio
